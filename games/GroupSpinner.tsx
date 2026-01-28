@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useClass } from '../context/ClassContext';
 import { shuffleArray, triggerConfetti } from '../utils/helpers';
 import { Button } from '../components/ui/Button';
-import { Users, Dice5, RefreshCcw, Settings2, Palette, Layers, Divide, Zap, GripHorizontal } from 'lucide-react';
+import { Users, Dice5, RefreshCcw, Settings2, Palette, Layers, Divide, Zap, GripHorizontal, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { THEME_BG_LIGHT, THEME_TEXT_COLORS } from '../types';
 import { Modal } from '../components/ui/Modal';
@@ -33,6 +33,46 @@ interface GameSettings {
     mode: GenerationMode;
 }
 
+// Visual Shuffling Component
+const ShufflingOverlay = ({ names }: { names: string[] }) => {
+    const [currentNames, setCurrentNames] = useState<string[]>([]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // Pick 3 random names to flash
+            const randomPick = Array.from({ length: 3 }, () => names[Math.floor(Math.random() * names.length)]);
+            setCurrentNames(randomPick);
+        }, 100);
+        return () => clearInterval(interval);
+    }, [names]);
+
+    return (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm rounded-[2rem]">
+            <motion.div 
+                className="flex gap-4 mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+            >
+               {currentNames.map((name, i) => (
+                   <motion.div 
+                       key={i}
+                       initial={{ y: 20, opacity: 0 }}
+                       animate={{ y: 0, opacity: 1 }}
+                       exit={{ y: -20, opacity: 0 }}
+                       className="bg-slate-800 text-white px-6 py-3 rounded-xl font-bold text-xl shadow-xl"
+                   >
+                       {name}
+                   </motion.div>
+               ))}
+            </motion.div>
+            <div className="flex items-center gap-2 text-slate-500 font-bold uppercase tracking-widest animate-pulse">
+                <Sparkles size={18} className="text-indigo-500" />
+                Randomizing...
+            </div>
+        </div>
+    );
+};
+
 export const GroupSpinner: React.FC = () => {
   const { students, themeColor } = useClass();
   
@@ -58,8 +98,8 @@ export const GroupSpinner: React.FC = () => {
     setIsGenerating(true);
     setGroups([]); // Clear for animation
     
-    // Animation delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    // Animation delay - extended for visual effect
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     const shuffled = shuffleArray([...students]);
     let newGroups: Group[] = [];
@@ -149,8 +189,6 @@ export const GroupSpinner: React.FC = () => {
   const handleDragStart = (e: React.DragEvent, groupId: number, member: string) => {
     setDraggedMember({ groupId, member });
     e.dataTransfer.effectAllowed = 'move';
-    // Small transparent image to hide default ghost if desired, or let it be.
-    // e.dataTransfer.setDragImage(new Image(), 0, 0); 
   };
 
   const handleDragOver = (e: React.DragEvent, groupId: number) => {
@@ -348,7 +386,9 @@ export const GroupSpinner: React.FC = () => {
         </Modal>
 
         {/* Groups Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-24 relative min-h-[400px]">
+             {isGenerating && <ShufflingOverlay names={students.map(s => s.name)} />}
+
             <AnimatePresence mode='popLayout'>
                 {isGenerated && groups.map((group, i) => (
                     <motion.div 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useClass } from '../context/ClassContext';
 import { Button } from '../components/ui/Button';
-import { Plus, Trash2, HelpCircle, Eye, Unlock } from 'lucide-react';
+import { Plus, Trash2, HelpCircle, Eye, Unlock, Edit2, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { THEME_COLORS, THEME_BG_LIGHT, THEME_TEXT_COLORS } from '../types';
 
@@ -17,6 +17,10 @@ export const TopicReveal: React.FC = () => {
     const [input, setInput] = useState('');
     const [isSetup, setIsSetup] = useState(true);
 
+    // Edit State
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [editContent, setEditContent] = useState('');
+
     const addCard = () => {
         if (!input.trim()) return;
         setCards([...cards, { id: Date.now(), content: input, isRevealed: false }]);
@@ -25,6 +29,23 @@ export const TopicReveal: React.FC = () => {
 
     const removeCard = (id: number) => {
         setCards(cards.filter(c => c.id !== id));
+    };
+
+    const startEditing = (card: Card) => {
+        setEditingId(card.id);
+        setEditContent(card.content);
+    };
+
+    const saveEdit = () => {
+        if (!editContent.trim()) return;
+        setCards(cards.map(c => c.id === editingId ? { ...c, content: editContent } : c));
+        setEditingId(null);
+        setEditContent('');
+    };
+
+    const cancelEdit = () => {
+        setEditingId(null);
+        setEditContent('');
     };
 
     const toggleReveal = (id: number) => {
@@ -59,11 +80,36 @@ export const TopicReveal: React.FC = () => {
                         {cards.length === 0 && <div className="text-center text-slate-400 py-4">No cards added yet.</div>}
                         {cards.map((card, i) => (
                             <div key={card.id} className="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                <div className="flex items-center gap-3">
-                                    <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold">{i + 1}</span>
-                                    <span className="font-bold text-slate-700">{card.content}</span>
+                                <div className="flex items-center gap-3 flex-1">
+                                    <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold shrink-0">{i + 1}</span>
+                                    
+                                    {editingId === card.id ? (
+                                        <div className="flex-1 flex gap-2">
+                                            <input 
+                                                autoFocus
+                                                value={editContent}
+                                                onChange={(e) => setEditContent(e.target.value)}
+                                                onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
+                                                className="flex-1 px-2 py-1 rounded border border-indigo-300 focus:outline-none bg-white font-bold text-slate-800"
+                                            />
+                                            <button onClick={saveEdit} className="text-green-600 hover:bg-green-50 p-1 rounded"><Check size={18}/></button>
+                                            <button onClick={cancelEdit} className="text-red-500 hover:bg-red-50 p-1 rounded"><X size={18}/></button>
+                                        </div>
+                                    ) : (
+                                        <span className="font-bold text-slate-700 truncate">{card.content}</span>
+                                    )}
                                 </div>
-                                <button onClick={() => removeCard(card.id)} className="text-slate-300 hover:text-red-500"><Trash2 size={18}/></button>
+                                
+                                {editingId !== card.id && (
+                                    <div className="flex gap-1">
+                                        <button onClick={() => startEditing(card)} className="text-slate-400 hover:text-indigo-500 p-2 hover:bg-indigo-50 rounded-lg transition-colors">
+                                            <Edit2 size={16}/>
+                                        </button>
+                                        <button onClick={() => removeCard(card.id)} className="text-slate-400 hover:text-red-500 p-2 hover:bg-red-50 rounded-lg transition-colors">
+                                            <Trash2 size={16}/>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
