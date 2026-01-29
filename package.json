@@ -9,7 +9,7 @@
     "framer-motion": "^10.16.16",
     "three": "^0.160.0",
     "@react-three/fiber": "^8.15.14",
-    "@react-three/drei": "^9.99.0",
+    "@react-three/drei": "^9.102.0",
     "uuid": "^9.0.1",
     "idb-keyval": "^6.2.1",
     "@vercel/analytics": "^1.1.1"

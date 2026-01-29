@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useClass } from '../context/ClassContext';
-import { Button } from '../components/ui/Button';
-import { Play, Pause, FastForward, User, Square } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Play, Pause, Square, User, RotateCcw } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { THEME_COLORS, THEME_BG_LIGHT, THEME_TEXT_COLORS } from '../types';
 
 export const PassTheToken: React.FC = () => {
@@ -27,17 +26,20 @@ export const PassTheToken: React.FC = () => {
     }, [isRunning, students.length, speed]);
 
     const stopRandom = () => {
+        if (!isRunning) {
+            setIsRunning(true);
+        }
+        
         // Spin fast then stop
         setSpeed(50);
-        setIsRunning(true);
         
+        // Sequence to slow down
         setTimeout(() => {
             setSpeed(100);
             setTimeout(() => {
                 setSpeed(300);
                 setTimeout(() => {
                     setIsRunning(false);
-                    // Determine winner visually
                 }, 1000);
             }, 800);
         }, 1000);
@@ -46,36 +48,43 @@ export const PassTheToken: React.FC = () => {
     if (students.length === 0) return <div className="text-center p-10 text-slate-400">Add students to play.</div>;
 
     return (
-        <div className="flex flex-col items-center justify-center py-4 md:py-8 animate-fade-in w-full pb-32">
-            {/* Header Controls */}
-            <div className="bg-white p-2 rounded-[2rem] shadow-sm border border-slate-200 mb-8 flex items-center gap-1">
+        <div className="flex flex-col items-center justify-center py-4 md:py-8 animate-fade-in w-full pb-48">
+            {/* Header Controls - Pill Style */}
+            <div className="bg-white p-2 rounded-full shadow-lg border border-slate-100 mb-8 flex items-center">
                 <button 
                     onClick={toggleRun} 
-                    className={`flex items-center gap-2 px-6 py-3 rounded-3xl font-bold transition-all ${isRunning ? 'bg-amber-100 text-amber-600' : 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 hover:scale-105'}`}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 ${
+                        isRunning 
+                        ? 'bg-indigo-600 text-white shadow-md' 
+                        : 'text-slate-600 hover:bg-slate-50'
+                    }`}
                 >
                     {isRunning ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}
-                    {isRunning ? 'Pause' : 'Start'}
+                    <span>{isRunning ? 'Pause' : 'Start'}</span>
                 </button>
+                
+                <div className="w-px h-6 bg-slate-200 mx-1"></div>
+
                 <button 
                     onClick={stopRandom} 
-                    className="flex items-center gap-2 px-6 py-3 rounded-3xl font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                    className="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-all duration-300"
                 >
-                    <FastForward size={20}/>
-                    Stop Random
+                    <Square size={18} fill="currentColor"/>
+                    <span>Stop</span>
                 </button>
             </div>
 
             {/* Visual Arena */}
             <div className="relative w-full max-w-4xl flex items-center justify-center min-h-[500px]">
                  {/* Center Token Display */}
-                 <div className="absolute z-20 flex flex-col items-center justify-center p-6 bg-white/95 backdrop-blur-sm rounded-full shadow-2xl border-4 border-slate-100 w-40 h-40 md:w-56 md:h-56 text-center">
+                 <div className="absolute z-20 flex flex-col items-center justify-center p-6 bg-white/95 backdrop-blur-sm rounded-full shadow-2xl border-4 border-slate-100 w-40 h-40 md:w-56 md:h-56 text-center transform transition-transform duration-300 hover:scale-105">
                      <span className="text-[10px] md:text-xs uppercase font-bold text-slate-400 tracking-widest mb-1">Current Turn</span>
                      {activeIndex !== null ? (
                          <motion.h2 
                             key={activeIndex}
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className={`text-xl md:text-3xl font-black ${THEME_TEXT_COLORS[themeColor]} line-clamp-2`}
+                            className={`text-xl md:text-3xl font-black ${THEME_TEXT_COLORS[themeColor]} line-clamp-2 px-2`}
                          >
                              {students[activeIndex].name}
                          </motion.h2>
@@ -85,7 +94,7 @@ export const PassTheToken: React.FC = () => {
                  </div>
 
                  {/* Grid */}
-                 <div className="w-full grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-4 p-4">
+                 <div className="w-full grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-4 p-4 pb-20">
                     {students.map((student, i) => (
                         <motion.div
                             key={student.id}

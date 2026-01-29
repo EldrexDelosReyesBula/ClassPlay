@@ -277,32 +277,15 @@ export const GroupSpinner: React.FC = () => {
                     <Users className="text-slate-400" size={20}/>
                     <span className="font-bold text-slate-700">{students.length} Students</span>
                 </div>
-                
-                {/* Number Stepper */}
-                <div className="flex items-center justify-between md:justify-start gap-3 bg-slate-50/80 p-2 rounded-2xl border border-slate-100 w-full md:w-auto">
-                    <span className="text-slate-500 font-bold text-xs uppercase tracking-wider ml-2 whitespace-nowrap">
-                        {settings.mode === 'count' ? 'Group Count' : 'Max Members'}
-                    </span>
-                    <div className="flex items-center gap-1">
-                         <button 
-                            className="w-10 h-10 rounded-xl bg-white shadow-sm hover:shadow-md flex items-center justify-center font-bold text-slate-600 transition-all active:scale-95"
-                            onClick={() => setTargetValue(Math.max(1, targetValue - 1))}
-                         >-</button>
-                         <span className="text-2xl font-black w-10 text-center text-slate-800 tabular-nums">{targetValue}</span>
-                         <button 
-                            className="w-10 h-10 rounded-xl bg-white shadow-sm hover:shadow-md flex items-center justify-center font-bold text-slate-600 transition-all active:scale-95"
-                            onClick={() => setTargetValue(Math.min(students.length, targetValue + 1))}
-                         >+</button>
-                    </div>
-                </div>
              </div>
 
              <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
                 <button 
                     onClick={() => setSettingsOpen(true)}
-                    className="p-4 rounded-2xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:shadow-md transition-all active:scale-95"
+                    className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:shadow-md transition-all active:scale-95 font-bold"
                 >
-                    <Settings2 size={24} />
+                    <Settings2 size={20} className="text-slate-400" />
+                    <span>Design & Logic</span>
                 </button>
                 <Button 
                     onClick={generateGroups} 
@@ -327,7 +310,7 @@ export const GroupSpinner: React.FC = () => {
                     <label className="flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">
                         <Divide size={16} /> Grouping Logic
                     </label>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3 mb-4">
                         <button
                             onClick={() => setSettings(s => ({...s, mode: 'count'}))}
                             className={`p-4 rounded-2xl border-2 text-left transition-all ${settings.mode === 'count' ? `border-${themeColor}-500 bg-${themeColor}-50` : 'border-slate-100 bg-slate-50'}`}
@@ -342,6 +325,24 @@ export const GroupSpinner: React.FC = () => {
                             <div className="font-bold text-slate-800 mb-1">By Max Size</div>
                             <div className="text-xs text-slate-500">"Max X students per group"</div>
                         </button>
+                    </div>
+
+                    {/* Logic Counter */}
+                    <div className="flex items-center justify-between bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <span className="text-slate-600 font-bold ml-2">
+                             {settings.mode === 'count' ? 'Number of Groups' : 'Max Students per Group'}
+                        </span>
+                        <div className="flex items-center gap-1 bg-white rounded-xl shadow-sm border border-slate-200 p-1">
+                             <button 
+                                className="w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center font-bold text-slate-600 transition-colors"
+                                onClick={() => setTargetValue(Math.max(1, targetValue - 1))}
+                             >-</button>
+                             <span className="text-xl font-black w-12 text-center text-slate-800 tabular-nums">{targetValue}</span>
+                             <button 
+                                className="w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center font-bold text-slate-600 transition-colors"
+                                onClick={() => setTargetValue(Math.min(students.length, targetValue + 1))}
+                             >+</button>
+                        </div>
                     </div>
                 </div>
 

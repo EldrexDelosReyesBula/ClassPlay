@@ -221,7 +221,7 @@ const MainLayout: React.FC = () => {
               )}
 
               {/* 3. Presentation */}
-              {(filterGame('Presentation Quest', getGameDescription('PRESENTATION')) || filterGame('Topic Reveal Board', getGameDescription('TOPIC_REVEAL'))) && (
+              {(filterGame('Presentation Quest', getGameDescription('PRESENTATION'))) && (
               <div>
                   <h3 className="text-sm md:text-xl font-bold text-slate-400 uppercase tracking-widest mb-4 md:mb-6 px-2">Presentation</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -234,24 +234,15 @@ const MainLayout: React.FC = () => {
                             onClick={() => requestGameLaunch(GameType.PRESENTATION)}
                           />
                       )}
-                      {filterGame('Topic Reveal Board', getGameDescription('TOPIC_REVEAL')) && (
-                          <GameCard 
-                            gameType={GameType.TOPIC_REVEAL}
-                            title="Topic Reveal Board"
-                            description={getGameDescription('TOPIC_REVEAL')}
-                            defaultIcon={HelpCircle}
-                            onClick={() => requestGameLaunch(GameType.TOPIC_REVEAL)}
-                          />
-                      )}
                   </div>
               </div>
               )}
 
               {/* 4. Order & Decisions */}
-              {(filterGame('Turn Order Reveal', getGameDescription('TURN_ORDER')) || filterGame('Dice & Randomizer', getGameDescription('DECISIONS')) || filterGame('Class Energy Meter', getGameDescription('ENERGY'))) && (
+              {(filterGame('Turn Order Reveal', getGameDescription('TURN_ORDER')) || filterGame('Dice & Randomizer', getGameDescription('DECISIONS')) || filterGame('Class Energy Meter', getGameDescription('ENERGY')) || filterGame('Topic Reveal Board', getGameDescription('TOPIC_REVEAL'))) && (
               <div>
                   <h3 className="text-sm md:text-xl font-bold text-slate-400 uppercase tracking-widest mb-4 md:mb-6 px-2">Order & Decisions</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
                       {filterGame('Turn Order Reveal', getGameDescription('TURN_ORDER')) && (
                           <GameCard 
                             gameType={GameType.TURN_ORDER}
@@ -259,6 +250,15 @@ const MainLayout: React.FC = () => {
                             description={getGameDescription('TURN_ORDER')}
                             defaultIcon={ListOrdered}
                             onClick={() => requestGameLaunch(GameType.TURN_ORDER)}
+                          />
+                      )}
+                       {filterGame('Topic Reveal Board', getGameDescription('TOPIC_REVEAL')) && (
+                          <GameCard 
+                            gameType={GameType.TOPIC_REVEAL}
+                            title="Topic Reveal Board"
+                            description={getGameDescription('TOPIC_REVEAL')}
+                            defaultIcon={HelpCircle}
+                            onClick={() => requestGameLaunch(GameType.TOPIC_REVEAL)}
                           />
                       )}
                       {filterGame('Dice & Randomizer', getGameDescription('DECISIONS')) && (
@@ -545,11 +545,11 @@ const MainLayout: React.FC = () => {
 };
 
 const App: React.FC = () => {
-    return (
-        <ClassProvider>
-            <MainLayout />
-        </ClassProvider>
-    );
+  return (
+    <ClassProvider>
+      <MainLayout />
+    </ClassProvider>
+  );
 };
 
 export default App;
