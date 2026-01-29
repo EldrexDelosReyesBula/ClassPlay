@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { ClassProvider, useClass } from './context/ClassContext';
 import { StudentManager } from './components/StudentManager';
 import { RecitationRoulette } from './games/RecitationRoulette';
@@ -240,6 +241,7 @@ const App: React.FC = () => {
   return (
     <ClassProvider>
       <MainLayout />
+      <Analytics />
     </ClassProvider>
   );
 };
