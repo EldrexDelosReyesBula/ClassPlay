@@ -37,10 +37,10 @@ export const EnergyMeter: React.FC = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 animate-fade-in flex flex-col items-center">
-            <h1 className="text-3xl font-black text-slate-800 mb-12">Classroom Energy Meter</h1>
+        <div className="max-w-4xl mx-auto py-8 md:py-12 px-4 animate-fade-in flex flex-col items-center">
+            <h1 className="text-2xl md:text-3xl font-black text-slate-800 mb-8 md:mb-12 text-center">Classroom Energy Meter</h1>
 
-            <div className="relative w-full h-24 bg-slate-200 rounded-full shadow-inner overflow-hidden cursor-pointer" onClick={handleBarClick}>
+            <div className="relative w-full h-16 md:h-24 bg-slate-200 rounded-full shadow-inner overflow-hidden cursor-pointer touch-none" onClick={handleBarClick}>
                  {/* Fill */}
                  <motion.div 
                     initial={{ width: 0 }}
@@ -53,7 +53,7 @@ export const EnergyMeter: React.FC = () => {
                  <div className="absolute top-0 bottom-0 left-[66%] w-1 bg-white/50" />
             </div>
 
-            <div className="mt-12 flex flex-col items-center text-center">
+            <div className="mt-8 md:mt-12 flex flex-col items-center text-center">
                 <motion.div 
                     key={getLabel()}
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -66,16 +66,16 @@ export const EnergyMeter: React.FC = () => {
                 <p className="text-xl text-slate-500 font-medium">{getLabel()}</p>
             </div>
 
-            <div className="mt-16 grid grid-cols-3 gap-8 w-full max-w-2xl">
-                 <button onClick={() => setEnergy(20)} className="flex flex-col items-center gap-2 p-4 rounded-2xl hover:bg-white hover:shadow-lg transition-all text-slate-500 hover:text-teal-600">
+            <div className="mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 w-full max-w-2xl">
+                 <button onClick={() => setEnergy(20)} className="flex flex-row sm:flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all text-slate-500 hover:text-teal-600">
                      <VolumeX size={32} />
                      <span className="font-bold">Quiet</span>
                  </button>
-                 <button onClick={() => setEnergy(50)} className="flex flex-col items-center gap-2 p-4 rounded-2xl hover:bg-white hover:shadow-lg transition-all text-slate-500 hover:text-amber-600">
+                 <button onClick={() => setEnergy(50)} className="flex flex-row sm:flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all text-slate-500 hover:text-amber-600">
                      <Smile size={32} />
                      <span className="font-bold">Normal</span>
                  </button>
-                 <button onClick={() => setEnergy(90)} className="flex flex-col items-center gap-2 p-4 rounded-2xl hover:bg-white hover:shadow-lg transition-all text-slate-500 hover:text-rose-600">
+                 <button onClick={() => setEnergy(90)} className="flex flex-row sm:flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all text-slate-500 hover:text-rose-600">
                      <Volume2 size={32} />
                      <span className="font-bold">Loud</span>
                  </button>

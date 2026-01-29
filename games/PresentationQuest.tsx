@@ -99,7 +99,7 @@ export const PresentationQuest: React.FC = () => {
     };
 
     return (
-        <div className="w-full max-w-5xl mx-auto py-8 px-4 animate-fade-in flex flex-col lg:flex-row gap-8">
+        <div className="w-full max-w-5xl mx-auto py-4 md:py-8 px-4 animate-fade-in flex flex-col-reverse lg:flex-row gap-6 md:gap-8">
             
             {/* Sidebar / Progress */}
             <div className="w-full lg:w-1/3 space-y-4">
@@ -119,7 +119,7 @@ export const PresentationQuest: React.FC = () => {
                         >+</Button>
                     </div>
                     
-                    <div className="space-y-2">
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2">
                         {Array.from({ length: totalGroups }).map((_, i) => (
                             <div 
                                 key={i} 
@@ -143,33 +143,33 @@ export const PresentationQuest: React.FC = () => {
             </div>
 
             {/* Main Stage Area */}
-            <div className="flex-1 bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl border border-slate-100 flex flex-col items-center justify-center text-center relative overflow-hidden">
+            <div className="flex-1 bg-white rounded-3xl md:rounded-[2.5rem] p-6 md:p-12 shadow-xl border border-slate-100 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[400px]">
                 <div className={`absolute top-0 left-0 w-full h-2 ${THEME_COLORS[themeColor]}`}></div>
                 
-                <h2 className="text-slate-400 font-bold uppercase tracking-widest mb-2">Currently Presenting</h2>
-                <h1 className="text-5xl font-black text-slate-800 mb-8">Group {currentGroup}</h1>
+                <h2 className="text-slate-400 font-bold uppercase tracking-widest mb-2 text-sm md:text-base">Currently Presenting</h2>
+                <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-6 md:mb-8">Group {currentGroup}</h1>
 
                 {/* Stage Tracker */}
-                <div className="flex items-center gap-2 mb-12 w-full justify-center">
+                <div className="flex items-center gap-2 mb-8 md:mb-12 w-full justify-center overflow-x-auto px-4 pb-2">
                     {stages.map((stage, i) => (
-                        <div key={stage.id} className="flex flex-col items-center gap-2">
-                            <div className={`w-4 h-4 rounded-full transition-all ${
+                        <div key={stage.id} className="flex flex-col items-center gap-2 min-w-[60px]">
+                            <div className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all ${
                                 i === currentStageIndex ? `${THEME_COLORS[themeColor]} scale-125 ring-4 ring-offset-2 ring-slate-100` : (i < currentStageIndex ? 'bg-slate-300' : 'bg-slate-100')
                             }`} />
-                            <span className={`text-xs font-bold ${i === currentStageIndex ? THEME_TEXT_COLORS[themeColor] : 'text-slate-300'}`}>{stage.label}</span>
+                            <span className={`text-[10px] md:text-xs font-bold whitespace-nowrap ${i === currentStageIndex ? THEME_TEXT_COLORS[themeColor] : 'text-slate-300'}`}>{stage.label}</span>
                         </div>
                     ))}
                 </div>
 
                 {/* Timer */}
-                <div className={`text-8xl font-black tabular-nums mb-8 ${timer < 30 ? 'text-red-500 animate-pulse' : 'text-slate-700'}`}>
+                <div className={`text-6xl md:text-8xl font-black tabular-nums mb-8 ${timer < 30 ? 'text-red-500 animate-pulse' : 'text-slate-700'}`}>
                     {formatTime(timer)}
                 </div>
 
                 {/* Controls */}
                 <div className="flex flex-wrap gap-4 justify-center">
                     <Button onClick={() => setIsTimerRunning(!isTimerRunning)} icon={isTimerRunning ? <Pause size={20}/> : <Play size={20}/>}>
-                        {isTimerRunning ? 'Pause Timer' : 'Start Timer'}
+                        {isTimerRunning ? 'Pause' : 'Start'}
                     </Button>
                     <Button variant="secondary" onClick={() => setTimer(stages[currentStageIndex].duration * 60)} icon={<RotateCcw size={20}/>}>
                         Reset
@@ -179,7 +179,7 @@ export const PresentationQuest: React.FC = () => {
                         className="bg-slate-800 text-white hover:bg-slate-900"
                         icon={<ChevronRight size={20}/>}
                     >
-                        {currentStageIndex === stages.length - 1 ? 'Finish Group' : 'Next Stage'}
+                        {currentStageIndex === stages.length - 1 ? 'Finish' : 'Next'}
                     </Button>
                 </div>
             </div>
@@ -192,15 +192,15 @@ export const PresentationQuest: React.FC = () => {
                         <div key={idx} className="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
                             <span className="w-6 h-6 flex items-center justify-center bg-slate-200 rounded-full text-xs font-bold text-slate-500">{idx+1}</span>
                             <input 
-                                className="flex-1 bg-transparent font-bold text-slate-700 focus:outline-none"
+                                className="flex-1 bg-transparent font-bold text-slate-700 focus:outline-none min-w-0"
                                 value={stage.label}
                                 onChange={(e) => updateStage(idx, 'label', e.target.value)}
                             />
-                            <div className="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-slate-200">
+                            <div className="flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-slate-200 shrink-0">
                                 <Clock size={14} className="text-slate-400"/>
                                 <input 
                                     type="number" 
-                                    className="w-12 text-center font-mono text-sm focus:outline-none"
+                                    className="w-8 md:w-12 text-center font-mono text-sm focus:outline-none"
                                     value={stage.duration}
                                     onChange={(e) => updateStage(idx, 'duration', parseInt(e.target.value) || 1)}
                                 />

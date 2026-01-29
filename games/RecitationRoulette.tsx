@@ -5,21 +5,14 @@ import { Button } from '../components/ui/Button';
 import { Shuffle, RefreshCw, CheckCircle2, RotateCcw, Box, Cuboid } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { triggerConfetti } from '../utils/helpers';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
 import { Text, Float, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Add type definitions for React Three Fiber intrinsic elements
+// Augment JSX namespace to include Three.js elements
 declare global {
   namespace JSX {
-    interface IntrinsicElements {
-      group: any;
-      mesh: any;
-      boxGeometry: any;
-      meshStandardMaterial: any;
-      ambientLight: any;
-      pointLight: any;
-    }
+    interface IntrinsicElements extends ThreeElements {}
   }
 }
 
@@ -212,7 +205,7 @@ export const RecitationRoulette: React.FC = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 className="flex flex-col items-center"
                             >
-                                <h2 className="text-4xl font-black text-slate-800 mb-4">All Done!</h2>
+                                <h2 className="text-3xl md:text-4xl font-black text-slate-800 mb-4">All Done!</h2>
                                 <p className="text-slate-500 mb-6 font-medium">Class cycle completed.</p>
                                 <Button onClick={resetGame} icon={<RotateCcw size={20}/>}>Restart Cycle</Button>
                             </motion.div>
@@ -224,7 +217,7 @@ export const RecitationRoulette: React.FC = () => {
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     exit={{ opacity: 0, y: -20, scale: 1.1 }}
                                     transition={{ duration: 0.1 }}
-                                    className={`text-5xl md:text-7xl font-black ${THEME_TEXT_COLORS[themeColor]} drop-shadow-sm tracking-tight break-words`}
+                                    className={`text-4xl sm:text-5xl md:text-7xl font-black ${THEME_TEXT_COLORS[themeColor]} drop-shadow-sm tracking-tight break-words`}
                                 >
                                     {currentName}
                                 </motion.h1>
@@ -269,11 +262,11 @@ export const RecitationRoulette: React.FC = () => {
 
         {/* Controls */}
         {!roundComplete && (
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4">
                 <Button 
                     onClick={spin} 
                     disabled={isSpinning}
-                    className="!text-xl !px-12 !py-6 shadow-xl active:scale-95 transition-transform"
+                    className="!text-xl !px-12 !py-6 shadow-xl active:scale-95 transition-transform w-full sm:w-auto"
                     icon={<Shuffle size={24} />}
                 >
                     {isSpinning ? '...' : 'Spin'}
@@ -285,6 +278,7 @@ export const RecitationRoulette: React.FC = () => {
                     disabled={isSpinning || history.length === 0}
                     icon={<RefreshCw size={24} />}
                     title="Reset History"
+                    className="w-full sm:w-auto"
                 >
                     Reset
                 </Button>

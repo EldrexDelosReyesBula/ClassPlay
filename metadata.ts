@@ -1,4 +1,4 @@
-{
+export default {
   "name": "ClassPlay",
   "description": "A privacy-first, offline-ready classroom gamification suite for teachers.",
   "requestFramePermissions": [],
@@ -13,4 +13,4 @@
     "DECISIONS": "Dice, Coins, and Timers for instant classroom decisions.",
     "ENERGY": "Interactive visual gauge to measure or set the classroom energy level."
   }
-}
+};

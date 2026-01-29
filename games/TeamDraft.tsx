@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useClass } from '../context/ClassContext';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
-import { Users, Shuffle, RotateCcw, ArrowRightLeft, Settings2, Edit2, GripHorizontal, Check } from 'lucide-react';
+import { Users, Shuffle, RotateCcw, ArrowRightLeft, Settings2, Edit2, GripHorizontal, Check, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { shuffleArray } from '../utils/helpers';
 import { saveGameState, loadGameState, clearGameState } from '../utils/storage';
@@ -56,6 +56,7 @@ export const TeamDraft: React.FC = () => {
 
   // Edit Team State
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
   // Load state on mount
   useEffect(() => {
@@ -82,6 +83,7 @@ export const TeamDraft: React.FC = () => {
             setTeams(validTeams);
             setUnassigned([...validUnassigned, ...newStudents]);
             setDraftOrder(saved.draftOrder);
+            setLastSaved(new Date());
         } else {
             setUnassigned(students.map(s => s.id));
             initializeTeams(2);
@@ -94,6 +96,7 @@ export const TeamDraft: React.FC = () => {
   useEffect(() => {
       if (teams.length > 0) {
         saveGameState(DB_KEY, { teams, unassigned, draftOrder });
+        setLastSaved(new Date());
       }
   }, [teams, unassigned, draftOrder]);
 
@@ -230,34 +233,39 @@ export const TeamDraft: React.FC = () => {
   const getStudentName = (id: string) => students.find(s => s.id === id)?.name || 'Unknown';
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 animate-fade-in pb-24">
+    <div className="w-full max-w-7xl mx-auto p-4 animate-fade-in pb-32">
         {/* Controls */}
-        <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 mb-6 flex flex-wrap gap-4 items-center justify-between sticky top-4 z-20">
-            <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-slate-100 p-2 rounded-xl">
+        <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-4 z-20">
+            <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                <div className="flex items-center justify-between w-full md:w-auto gap-4 bg-slate-100 p-2 rounded-xl">
                     <button onClick={() => updateTeamCount(Math.max(2, teams.length - 1))} className="w-8 h-8 bg-white rounded-lg font-bold shadow-sm hover:bg-slate-50">-</button>
-                    <span className="font-bold text-slate-700 w-16 text-center">{teams.length} Teams</span>
+                    <span className="font-bold text-slate-700 w-24 text-center">{teams.length} Teams</span>
                     <button onClick={() => updateTeamCount(Math.min(12, teams.length + 1))} className="w-8 h-8 bg-white rounded-lg font-bold shadow-sm hover:bg-slate-50">+</button>
                 </div>
                 
-                <div className="hidden md:flex items-center gap-2 text-sm font-medium bg-slate-50 p-2 rounded-xl">
+                <div className="flex items-center justify-center gap-2 text-sm font-medium bg-slate-50 p-2 rounded-xl w-full md:w-auto">
                     <button 
                         onClick={() => setDraftOrder('SEQUENTIAL')}
-                        className={`px-3 py-1.5 rounded-lg transition-all ${draftOrder === 'SEQUENTIAL' ? 'bg-white shadow-sm text-slate-800' : 'text-slate-400'}`}
+                        className={`flex-1 md:flex-none px-3 py-1.5 rounded-lg transition-all ${draftOrder === 'SEQUENTIAL' ? 'bg-white shadow-sm text-slate-800' : 'text-slate-400'}`}
                     >
                         Sequential
                     </button>
                     <button 
                          onClick={() => setDraftOrder('SNAKE')}
-                         className={`px-3 py-1.5 rounded-lg transition-all ${draftOrder === 'SNAKE' ? 'bg-white shadow-sm text-slate-800' : 'text-slate-400'}`}
+                         className={`flex-1 md:flex-none px-3 py-1.5 rounded-lg transition-all ${draftOrder === 'SNAKE' ? 'bg-white shadow-sm text-slate-800' : 'text-slate-400'}`}
                     >
                         Snake
                     </button>
                 </div>
             </div>
-            <div className="flex gap-2">
-                <Button onClick={resetAll} variant="secondary" icon={<RotateCcw size={18}/>}>Reset</Button>
-                <Button onClick={autoDraft} icon={<Shuffle size={18}/>}>Auto Draft</Button>
+            <div className="flex gap-2 w-full md:w-auto items-center">
+                {lastSaved && (
+                     <div className="hidden lg:flex items-center gap-1 text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded-md mr-2 animate-pulse">
+                         <Save size={12}/> Saved
+                     </div>
+                )}
+                <Button onClick={resetAll} variant="secondary" icon={<RotateCcw size={18}/>} className="flex-1 md:flex-none">Reset</Button>
+                <Button onClick={autoDraft} icon={<Shuffle size={18}/>} className="flex-1 md:flex-none">Auto Draft</Button>
             </div>
         </div>
 
@@ -304,7 +312,7 @@ export const TeamDraft: React.FC = () => {
             </div>
 
             {/* Teams */}
-            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
                 {teams.map((team) => {
                     const isTarget = (selectedStudentId && !team.members.includes(selectedStudentId)) || dragOverTeamId === team.id;
 

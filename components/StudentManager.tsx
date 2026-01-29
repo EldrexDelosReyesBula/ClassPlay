@@ -68,17 +68,17 @@ export const StudentManager: React.FC = () => {
   const studentCount = students.length;
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
+    <div className="w-full max-w-4xl mx-auto space-y-6 md:space-y-8 animate-fade-in">
       {/* Header Section */}
-      <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
+      <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div>
+          <div className="w-full md:w-auto">
              <label className="block text-sm font-medium text-slate-400 mb-1 ml-1">Class Name</label>
             <input
               type="text"
               value={className}
               onChange={(e) => setClassName(e.target.value)}
-              className="text-3xl font-bold text-slate-800 bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-indigo-500 focus:outline-none transition-colors w-full md:w-auto"
+              className="text-2xl md:text-3xl font-bold text-slate-800 bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-indigo-500 focus:outline-none transition-colors w-full"
               placeholder="Enter Class Name"
             />
             <p className="text-slate-500 mt-2 flex items-center gap-2">
@@ -86,8 +86,8 @@ export const StudentManager: React.FC = () => {
             </p>
           </div>
           
-          <div className="flex gap-3">
-             <Button variant="danger" onClick={resetSession} icon={<Trash2 size={18}/>}>
+          <div className="flex gap-3 w-full md:w-auto">
+             <Button variant="danger" onClick={resetSession} icon={<Trash2 size={18}/>} className="w-full md:w-auto">
                 Reset
              </Button>
           </div>
@@ -95,10 +95,10 @@ export const StudentManager: React.FC = () => {
       </div>
 
       {/* Input Section */}
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-full order-1 md:order-1">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-slate-800">Add Students</h3>
+            <h3 className="text-lg md:text-xl font-bold text-slate-800">Add Students</h3>
             <div className="flex gap-2">
                  <input 
                     type="file" 
@@ -126,22 +126,22 @@ export const StudentManager: React.FC = () => {
           />
           
           <div className="flex justify-end">
-            <Button onClick={handleAddManual} disabled={!inputText.trim()} icon={<UserPlus size={18}/>}>
+            <Button onClick={handleAddManual} disabled={!inputText.trim()} icon={<UserPlus size={18}/>} className="w-full md:w-auto">
               Add to Class
             </Button>
           </div>
         </div>
 
         {/* List Section */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-[400px]">
-          <h3 className="text-xl font-bold text-slate-800 mb-4">Class Roster</h3>
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-[400px] md:h-auto order-2 md:order-2">
+          <h3 className="text-lg md:text-xl font-bold text-slate-800 mb-4">Class Roster</h3>
           {students.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-100 rounded-xl">
+            <div className="flex-1 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-100 rounded-xl min-h-[200px]">
               <Users size={48} className="mb-4 opacity-20" />
               <p>No students added yet</p>
             </div>
           ) : (
-            <div className="flex-1 overflow-y-auto pr-2 space-y-2">
+            <div className="flex-1 overflow-y-auto pr-2 space-y-2 max-h-[400px]">
               {students.map((student, idx) => (
                 <motion.div 
                     layout
@@ -172,7 +172,7 @@ export const StudentManager: React.FC = () => {
                         const newStudents = students.filter(s => s.id !== student.id);
                         setStudents(newStudents);
                     }}
-                    className="text-slate-300 hover:text-red-500 p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="text-slate-300 hover:text-red-500 p-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <X size={18} />
                   </button>
