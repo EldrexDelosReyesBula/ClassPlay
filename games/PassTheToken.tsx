@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useClass } from '../context/ClassContext';
-import { Play, Pause, Square, User, RotateCcw } from 'lucide-react';
+import { Play, Pause, Square, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { THEME_COLORS, THEME_BG_LIGHT, THEME_TEXT_COLORS } from '../types';
 
@@ -50,13 +50,13 @@ export const PassTheToken: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-center py-4 md:py-8 animate-fade-in w-full pb-48">
             {/* Header Controls - Pill Style */}
-            <div className="bg-white p-2 rounded-full shadow-lg border border-slate-100 mb-8 flex items-center">
+            <div className="bg-white p-1.5 rounded-full shadow-lg border border-slate-200 mb-8 flex items-center gap-1">
                 <button 
                     onClick={toggleRun} 
-                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 ${
+                    className={`flex items-center gap-2 px-8 py-3 rounded-full font-bold transition-all duration-300 ${
                         isRunning 
                         ? 'bg-indigo-600 text-white shadow-md' 
-                        : 'text-slate-600 hover:bg-slate-50'
+                        : 'text-slate-600 hover:bg-slate-100'
                     }`}
                 >
                     {isRunning ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}
@@ -67,7 +67,7 @@ export const PassTheToken: React.FC = () => {
 
                 <button 
                     onClick={stopRandom} 
-                    className="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-all duration-300"
+                    className="flex items-center gap-2 px-8 py-3 rounded-full font-bold text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-all duration-300"
                 >
                     <Square size={18} fill="currentColor"/>
                     <span>Stop</span>

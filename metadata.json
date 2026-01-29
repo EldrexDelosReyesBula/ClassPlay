@@ -3,8 +3,8 @@
   "description": "A privacy-first, offline-ready classroom gamification suite for teachers.",
   "requestFramePermissions": [],
   "gameDescriptions": {
-    "ROULETTE": "Fair random picker with 3D wheel and no-repeat logic.",
-    "GROUPS": "Randomly assign students into groups with 2D wheel or 3D physics effects.",
+    "ROULETTE": "Fair random picker and no-repeat logic.",
+    "GROUPS": "Randomly assign students into groups.",
     "DRAFT": "Controlled or random team assignment with click-to-assign draft style.",
     "PASS_TOKEN": "Turn-based participation where a digital token moves between students.",
     "PRESENTATION": "Structured group presentation timer with stages (Setup, Speech, Q&A).",

@@ -327,12 +327,12 @@ export const GroupSpinner: React.FC = () => {
                         </button>
                     </div>
 
-                    {/* Logic Counter */}
-                    <div className="flex items-center justify-between bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                        <span className="text-slate-600 font-bold ml-2">
-                             {settings.mode === 'count' ? 'Number of Groups' : 'Max Students per Group'}
-                        </span>
-                        <div className="flex items-center gap-1 bg-white rounded-xl shadow-sm border border-slate-200 p-1">
+                    {/* Logic Counter inside Modal */}
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-center justify-between">
+                         <span className="font-bold text-slate-700">
+                             {settings.mode === 'count' ? 'Target Group Count' : 'Max Members / Group'}
+                         </span>
+                         <div className="flex items-center gap-2 bg-white rounded-xl shadow-sm border border-slate-200 p-1">
                              <button 
                                 className="w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center font-bold text-slate-600 transition-colors"
                                 onClick={() => setTargetValue(Math.max(1, targetValue - 1))}
@@ -342,7 +342,7 @@ export const GroupSpinner: React.FC = () => {
                                 className="w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center font-bold text-slate-600 transition-colors"
                                 onClick={() => setTargetValue(Math.min(students.length, targetValue + 1))}
                              >+</button>
-                        </div>
+                         </div>
                     </div>
                 </div>
 
